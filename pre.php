@@ -1,25 +1,13 @@
+#!/usr/bin/env php
 <?php
 
 declare(strict_types=1);
-
-namespace MattHarvey\Pre;
 
 final class App
 {
     public static function run(array $argv): int
     {
-        if (count($argv) > 1) {
-            switch ($argv[1]) {
-            case '-h': case '--help':
-                echo 'Usage: pre <args...>' . PHP_EOL;
-                echo 'Runs the contents of the first line of the file .pre in the current directory, ' .
-                    'prefixed as a shell command to whatever remaining arguments are passed.' . PHP_EOL;
-                return 0;
-            }
-        }
-
         $rest = [];
-
         for ($i = 1; $i < count($argv); $i++) {
             $rest[] = $argv[$i];
         }
@@ -35,8 +23,11 @@ final class App
         if (empty($rest)) {
             return 0;
         }
+
         $command = implode(' ', $rest);
         passthru($command, $result);
         return $result;
     }
 }
+
+exit(App::run($argv));
